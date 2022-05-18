@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define N 3
+#define N 1000
 #define print 1
 
 void generateRandomSquareMatrix(int result[N][N]) {
