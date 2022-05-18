@@ -10,45 +10,66 @@ PROGRAM Main
   integer, parameter        :: N = 10
   integer, dimension (N,N)  :: A
   integer, dimension (N,1)  :: x, b, c
+  logical                   :: printMatrixs = .false. ! Change the value in order to print the matrices
 
   call random_number(u)
   random = FLOOR(10*u)
 
-  print*, ""
-  print*, "Matriz A:"
+  ! ------------------------------------------------------ Matrix A
   do i = 1, N
     do j = 1, N
       call random_number(u)
       random = FLOOR(10*u)
       A(i,j) = random
     end do
-    print*, A(i,:)
   end do
 
-  print*, ""
-  print*, "Matriz x:"
+  if(printMatrixs) then
+    print*, ""
+    print*, "Matriz A:"
+    do i = 1, N
+      print*, A(i,:)
+    end do
+  end if
+
+
+  ! ------------------------------------------------------ Matrix x
   do i = 1, N
     call random_number(u)
     random = FLOOR(10*u)
     x(i,1) = random
-    print*, x(i,1)
   end do
+  
+  if(printMatrixs) then
+    print*, ""
+    print*, "Matriz x:"
+    do i = 1, N
+      print*, x(i,1)
+    end do
+  end if
 
+
+  ! ------------------------------------------------------ Matrix b
   b = 0
-  print*, ""
-  print*, "Matriz b:"
   call cpu_time(startB)
   do i = 1, N
     do j = 1, N
       b(i,1) = b(i,1) + A(i,j) * x(j,1)
     end do
-    print*, b(i,:)
   end do
   call cpu_time(finishB)
 
+  if(printMatrixs) then
+    print*, ""
+    print*, "Matriz b:"
+    do i = 1, N
+      print*, b(i,1)
+    end do
+  end if
+
+
+  ! ------------------------------------------------------ Matrix c
   c = 0
-  print*, ""
-  print*, "Matriz c:"
   call cpu_time(startC)
   do j = 1, N
     do i = 1, N
@@ -56,12 +77,21 @@ PROGRAM Main
     end do
   end do
   call cpu_time(finishC)
-  do i = 1, N
-    print*, c(i,1)
-  end do
 
 
+  if(printMatrixs) then
+    print*, ""
+    print*, "Matriz c:"
+    do i = 1, N
+      print*, c(i,1)
+    end do
+  end if
+
+
+  ! ------------------------------------------------------ Results time
+  print*, ""
   print '("Generating matrix b took",f6.3," seconds to execute")',finishB-startB
   print '("Generating matrix c took",f6.3," seconds to execute")',finishC-startC
+  print*, ""
 
 END PROGRAM Main
