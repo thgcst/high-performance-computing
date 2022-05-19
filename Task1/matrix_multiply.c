@@ -3,42 +3,46 @@
 #include <time.h>
 
 #define N 1000
-#define print 1
+#define print 0
 
-void generateRandomSquareMatrix(int result[N][N]) {
+double randomNumber() {
+    return (double)rand() / (double)RAND_MAX;
+}
+
+void generateRandomSquareMatrix(double result[N][N]) {
     int i, j;
 
     for (i = 0; i < N; i++)
         for (j = 0; j < N; j++)
-            result[i][j] = rand() % 10;
+            result[i][j] = randomNumber();
 }
 
-void printSquareMatrix(int matrix[N][N]) {
+void printSquareMatrix(double matrix[N][N]) {
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
-            printf("%d ", matrix[i][j]);
+            printf("%f ", matrix[i][j]);
         }
         printf("\n");
     }
 }
 
-void generateRandomLinearMatrix(int result[N][1]) {
+void generateRandomLinearMatrix(double result[N][1]) {
     int i;
 
     for (i = 0; i < N; i++)
-        result[i][0] = rand() % 10;
+        result[i][0] = randomNumber();
 }
 
-void printLinearMatrix(int matrix[N][1]) {
+void printLinearMatrix(double matrix[N][1]) {
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < 1; j++) {
-            printf("%d ", matrix[i][j]);
+            printf("%f ", matrix[i][j]);
         }
         printf("\n");
     }
 }
 
-void multiplySquareByLinear(int A[N][N], int x[N][1], int result[N][1]) {
+void multiplySquareByLinear(double A[N][N], double x[N][1], double result[N][1]) {
     clock_t t;
     t = clock();
 
@@ -54,7 +58,7 @@ void multiplySquareByLinear(int A[N][N], int x[N][1], int result[N][1]) {
     printf("multiplySquareByLinear() took %f seconds to execute \n", time_taken);
 }
 
-void multiplySquareByLinear2(int A[N][N], int x[N][1], int result[N][1]) {
+void multiplySquareByLinear2(double A[N][N], double x[N][1], double result[N][1]) {
     clock_t t;
     t = clock();
 
@@ -74,7 +78,7 @@ int main() {
     srand(time(NULL));
 
     // Generate random Square Matrix
-    int A[N][N];
+    double A[N][N];
     generateRandomSquareMatrix(A);
 
     if (print) {
@@ -85,7 +89,7 @@ int main() {
     }
 
     // Generate random Linear Matrix
-    int x[N][1];
+    double x[N][1];
     generateRandomLinearMatrix(x);
 
     if (print) {
@@ -96,8 +100,8 @@ int main() {
     }
 
     // Multiply Square Matrix by Linear Matrix
-    int b[N][1] = {{0}};
-    int c[N][1] = {{0}};
+    double b[N][1] = {{0.0}};
+    double c[N][1] = {{0.0}};
     multiplySquareByLinear(A, x, b);
     multiplySquareByLinear2(A, x, c);
 
