@@ -55,7 +55,7 @@ void multiplySquareByLinear(double A[N][N], double x[N][1], double result[N][1])
 
     t = clock() - t;
     double time_taken = ((double)t) / CLOCKS_PER_SEC;  // in seconds
-    printf("multiplySquareByLinear() took %f seconds to execute \n", time_taken);
+    printf("multiplySquareByLinear() took %.6f seconds to execute \n", time_taken);
 }
 
 void multiplySquareByLinear2(double A[N][N], double x[N][1], double result[N][1]) {
@@ -71,7 +71,7 @@ void multiplySquareByLinear2(double A[N][N], double x[N][1], double result[N][1]
 
     t = clock() - t;
     double time_taken = ((double)t) / CLOCKS_PER_SEC;  // in seconds
-    printf("multiplySquareByLinear2() took %f seconds to execute \n", time_taken);
+    printf("multiplySquareByLinear2() took %.6f seconds to execute \n", time_taken);
 }
 
 int main() {
