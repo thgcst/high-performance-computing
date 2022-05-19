@@ -6,21 +6,17 @@ PROGRAM Main
   IMPLICIT NONE
 
   real                      :: u, startB, finishB, startC, finishC
-  integer                   :: random, i, j
-  integer, parameter        :: N = 10
-  integer, dimension (N,N)  :: A
-  integer, dimension (N,1)  :: x, b, c
+  integer                   :: i, j
+  integer, parameter        :: N = 10000
+  real, dimension (N,N)     :: A
+  real, dimension (N,1)     :: x, b, c
   logical                   :: printMatrixs = .false. ! Change the value in order to print the matrices
-
-  call random_number(u)
-  random = FLOOR(10*u)
 
   ! ------------------------------------------------------ Matrix A
   do i = 1, N
     do j = 1, N
       call random_number(u)
-      random = FLOOR(10*u)
-      A(i,j) = random
+      A(i,j) = u
     end do
   end do
 
@@ -36,8 +32,7 @@ PROGRAM Main
   ! ------------------------------------------------------ Matrix x
   do i = 1, N
     call random_number(u)
-    random = FLOOR(10*u)
-    x(i,1) = random
+    x(i,1) = u
   end do
   
   if(printMatrixs) then
@@ -50,7 +45,7 @@ PROGRAM Main
 
 
   ! ------------------------------------------------------ Matrix b
-  b = 0
+  b = 0.0
   call cpu_time(startB)
   do i = 1, N
     do j = 1, N
@@ -69,7 +64,7 @@ PROGRAM Main
 
 
   ! ------------------------------------------------------ Matrix c
-  c = 0
+  c = 0.0
   call cpu_time(startC)
   do j = 1, N
     do i = 1, N
