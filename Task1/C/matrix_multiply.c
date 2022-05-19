@@ -42,7 +42,7 @@ void printLinearMatrix(double matrix[N][1]) {
     }
 }
 
-void multiplySquareByLinear(double A[N][N], double x[N][1], double result[N][1]) {
+double multiplySquareByLinear_ij(double A[N][N], double x[N][1], double result[N][1]) {
     clock_t t;
     t = clock();
 
@@ -55,10 +55,10 @@ void multiplySquareByLinear(double A[N][N], double x[N][1], double result[N][1])
 
     t = clock() - t;
     double time_taken = ((double)t) / CLOCKS_PER_SEC;  // in seconds
-    printf("multiplySquareByLinear() took %.6f seconds to execute \n", time_taken);
+    return time_taken;
 }
 
-void multiplySquareByLinear2(double A[N][N], double x[N][1], double result[N][1]) {
+double multiplySquareByLinear_ji(double A[N][N], double x[N][1], double result[N][1]) {
     clock_t t;
     t = clock();
 
@@ -71,7 +71,7 @@ void multiplySquareByLinear2(double A[N][N], double x[N][1], double result[N][1]
 
     t = clock() - t;
     double time_taken = ((double)t) / CLOCKS_PER_SEC;  // in seconds
-    printf("multiplySquareByLinear2() took %.6f seconds to execute \n", time_taken);
+    return time_taken;
 }
 
 int main() {
@@ -102,20 +102,20 @@ int main() {
     // Multiply Square Matrix by Linear Matrix
     double b[N][1] = {{0.0}};
     double c[N][1] = {{0.0}};
-    multiplySquareByLinear(A, x, b);
-    multiplySquareByLinear2(A, x, c);
+    double timeTaken_ij, timeTaken_ji;
 
-    printf("\n");
+    timeTaken_ij = multiplySquareByLinear_ij(A, x, b);
+    timeTaken_ji = multiplySquareByLinear_ji(A, x, b);
 
     if (print) {
+        printf("\n");
         printf("Matriz b:\n");
         printLinearMatrix(b);
 
-        printf("Matriz c:\n");
-        printLinearMatrix(c);
-
         printf("\n");
     }
+
+    printf("%d,%.6f,%.6f\n", N, timeTaken_ij, timeTaken_ji);
 
     return 0;
 }
