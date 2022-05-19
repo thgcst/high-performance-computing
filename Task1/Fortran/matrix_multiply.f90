@@ -7,7 +7,7 @@ PROGRAM Main
 
   real                      :: u, startB, finishB, startC, finishC
   integer                   :: i, j
-  integer, parameter        :: N = 20000
+  integer, parameter        :: N = 30000
   real, dimension (N,N)     :: A
   real, dimension (N,1)     :: x, b, c
   logical                   :: printMatrixs = .false. ! Change the value in order to print the matrices
@@ -84,6 +84,6 @@ PROGRAM Main
 
 
   ! ------------------------------------------------------ Results time
-  print '(I0, ",", f10.6, ",", f10.6)', N, finishB - startB, finishC - startC
+  print '(I0, ";", f10.6, ";", f10.6)', N, finishB - startB, finishC - startC
 
 END PROGRAM Main

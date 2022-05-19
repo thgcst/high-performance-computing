@@ -74,7 +74,13 @@ double multiplySquareByLinear_ji(double A[N][N], double x[N][1], double result[N
     return time_taken;
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+    if (argc != 2 || (atoi(argv[1]) != 0 && atoi(argv[1]) != 1)) {
+        printf("Argumentos inválidos.\n");
+        return 0;
+    }
+    int type = atoi(argv[1]);
+
     srand(time(NULL));
 
     // Generate random Square Matrix
@@ -101,11 +107,13 @@ int main() {
 
     // Multiply Square Matrix by Linear Matrix
     double b[N][1] = {{0.0}};
-    double c[N][1] = {{0.0}};
-    double timeTaken_ij, timeTaken_ji;
+    double timeTaken;
 
-    timeTaken_ij = multiplySquareByLinear_ij(A, x, b);
-    timeTaken_ji = multiplySquareByLinear_ji(A, x, b);
+    if (type == 1) {
+        timeTaken = multiplySquareByLinear_ij(A, x, b);
+    } else {
+        timeTaken = multiplySquareByLinear_ji(A, x, b);
+    }
 
     if (print) {
         printf("\n");
@@ -115,7 +123,7 @@ int main() {
         printf("\n");
     }
 
-    printf("%d,%.6f,%.6f\n", N, timeTaken_ij, timeTaken_ji);
+    printf("%d;%.6f\n", N, timeTaken);
 
     return 0;
 }
