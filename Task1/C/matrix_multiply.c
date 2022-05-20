@@ -2,87 +2,93 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define N 1000
-
 double randomNumber() {
     return (double)rand() / (double)RAND_MAX;
 }
 
-void generateRandomSquareMatrix(double result[N][N]) {
-    int i, j;
+double *zeroVector(int N) {
+    double *vector = (double *)malloc(N * sizeof(double));
+    for (int i = 0; i <= N; i++)
+        vector[i] = 0;
 
-    for (i = 0; i < N; i++)
-        for (j = 0; j < N; j++)
-            result[i][j] = randomNumber();
+    return vector;
 }
 
-void generateRandomLinearMatrix(double result[N][1]) {
-    int i;
+double *multiplySquareByLinear_ij(double **A, double *x, int N) {
+    double *b = zeroVector(N);
 
-    for (i = 0; i < N; i++)
-        result[i][0] = randomNumber();
-}
-
-double multiplySquareByLinear_ij(double A[N][N], double x[N][1], double result[N][1]) {
-    clock_t t;
-    t = clock();
-
-    int i, j;
-    for (i = 0; i < N; i++) {
-        for (j = 0; j < N; j++) {
-            result[i][0] += A[i][j] * x[j][0];
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            b[i] += A[i][j] * x[j];
         }
     }
 
-    t = clock() - t;
-    double time_taken = ((double)t) / CLOCKS_PER_SEC;  // in seconds
-    return time_taken;
+    return b;
 }
 
-double multiplySquareByLinear_ji(double A[N][N], double x[N][1], double result[N][1]) {
-    clock_t t;
-    t = clock();
+double *multiplySquareByLinear_ji(double **A, double *x, int N) {
+    double *b = zeroVector(N);
 
-    int i, j;
-    for (j = 0; j < N; j++) {
-        for (i = 0; i < N; i++) {
-            result[i][0] += A[i][j] * x[j][0];
+    for (int j = 0; j < N; j++) {
+        for (int i = 0; i < N; i++) {
+            b[i] += A[i][j] * x[j];
         }
     }
 
-    t = clock() - t;
-    double time_taken = ((double)t) / CLOCKS_PER_SEC;  // in seconds
-    return time_taken;
+    return b;
+}
+
+int printB(double *b, int N) {
+    for (int i = 0; i < N; i++) {
+        printf("%f ", b[i]);
+    }
+    return 1;
 }
 
 int main(int argc, char *argv[]) {
-    if (argc != 2 || (atoi(argv[1]) != 0 && atoi(argv[1]) != 1)) {
-        printf("Invalid arguments\n\nYour program must have exactly one argument 0 or 1, which stands for:\n  1: ij\n  0: ji\n");
+    if (argc != 3 || (atoi(argv[2]) != 0 && atoi(argv[2]) != 1)) {
+        printf("Invalid arguments\n\nYour program must have exactly two arguments. First argument stands for the order of the square matrix. Second argument must be 0 or 1, which stands for:\n - 1: ij\n - 0: ji\n");
         return 0;
     }
-    int type = atoi(argv[1]);
+    int N = atoi(argv[1]);
+    int type = atoi(argv[2]);
 
     srand(time(NULL));
 
-    // Generate random Square Matrix
-    double A[N][N];
-    generateRandomSquareMatrix(A);
+    // Declare A, x and b
+    double **A = (double **)malloc(N * sizeof(double *));
+    double *x = (double *)malloc(N * sizeof(double));
+    double *b;
 
-    // Generate random Linear Matrix
-    double x[N][1];
-    generateRandomLinearMatrix(x);
+    // Populate A and b with random numbers
+    for (int i = 0; i < N; i++) {
+        A[i] = (double *)malloc(N * sizeof(double));
+        for (int j = 0; j < N; j++) {
+            A[i][j] = randomNumber();
+        }
+        x[i] = randomNumber();
+    };
 
-    // Multiply Square Matrix by Linear Matrix
-    double b[N][1] = {{0.0}};
-    double timeTaken;
+    // Multiply matrices
 
+    clock_t start, finish;
+
+    start = clock();
     if (type == 1) {
-        timeTaken = multiplySquareByLinear_ij(A, x, b);
+        b = multiplySquareByLinear_ij(A, x, N);
     } else {
-        timeTaken = multiplySquareByLinear_ji(A, x, b);
+        b = multiplySquareByLinear_ji(A, x, N);
     }
+    finish = clock();
 
-    printf("%d,%.6f\n", N, timeTaken);
+    // Free A
+    for (int i = 0; i < N; i++) {
+        free(A[i]);
+    }
+    free(x);
+    free(b);
+
+    printf("%d,%.6f", N, ((double)(finish - start)) / CLOCKS_PER_SEC);
 
     return 0;
 }
