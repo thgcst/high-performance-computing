@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
         timeTaken = multiplySquareByLinear_ji(A, x, b);
     }
 
-    printf("%d;%.6f\n", N, timeTaken);
+    printf("%d,%.6f\n", N, timeTaken);
 
     return 0;
 }

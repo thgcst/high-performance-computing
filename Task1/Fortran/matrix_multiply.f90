@@ -56,6 +56,6 @@ PROGRAM Main
 
 
   ! ------------------------------------------------------ Results time
-  print *, N, ";", (finishB - startB)
+  print *, N, ",", (finishB - startB)
 
 END PROGRAM Main
