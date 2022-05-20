@@ -5,17 +5,26 @@
 PROGRAM Main
   IMPLICIT NONE
 
-  character(len=32)         :: arg
-  real                      :: u, startB, finishB, startC, finishC
-  integer                   :: i, j, type
-  integer, parameter        :: N = 22000
-  real, dimension (N,N)     :: A
-  real, dimension (N,1)     :: x, b, c
-  logical                   :: printMatrixs = .false. ! Change the value in order to print the matrices
+  character(len=32)                     :: arg
+  real                                  :: u, startB, finishB
+  integer                               :: i, j, N, type
+  real, dimension (:,:), allocatable    :: A
+  real, dimension (:), allocatable      :: x, b
+
+  ! ------------------------------------------------------ Get N argument
+  call getarg(1, arg)    
+  read(arg, "(I10)") N
 
   ! ------------------------------------------------------ Get type argument
   call getarg(2, arg)    
   read(arg, "(I1)") type
+
+  ! ------------------------------------------------------ Initialize variables and seed random number 
+  allocate(A(N, N))
+  allocate(x(N))
+  allocate(b(N))
+
+  call random_seed()
 
   ! ------------------------------------------------------ Matrix A
   do i = 1, N
@@ -29,7 +38,7 @@ PROGRAM Main
   ! ------------------------------------------------------ Matrix x
   do i = 1, N
     call random_number(u)
-    x(i,1) = u
+    x(i) = u
   end do
 
   ! ------------------------------------------------------ Multiply matrices
@@ -39,21 +48,25 @@ PROGRAM Main
   if (type == 1) then
         do i = 1, N
           do j = 1, N
-            b(i,1) = b(i,1) + A(i,j) * x(j,1)
+            b(i) = b(i) + A(i,j) * x(j)
           end do
         end do
     else if (type == 0) then
         do j = 1, N
           do i = 1, N
-            c(i,1) = c(i,1) + A(i,j) * x(j,1)
+            b(i) = b(i) + A(i,j) * x(j)
           end do
         end do
     else
         CALL EXIT(0)
     end if
 
-    call cpu_time(finishB)
+  call cpu_time(finishB)
 
+  ! ------------------------------------------------------ Deallocate memory
+  deallocate(A)
+  deallocate(x)
+  deallocate(b)
 
   ! ------------------------------------------------------ Results time
   print *, N, ",", (finishB - startB)

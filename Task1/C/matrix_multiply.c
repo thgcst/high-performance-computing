@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define N 900
+#define N 1000
 
 double randomNumber() {
     return (double)rand() / (double)RAND_MAX;
